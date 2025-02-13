@@ -24,7 +24,10 @@ function validateForm() {
 
 function downloadAsImage() {
   const container = document.querySelector('.container');
-  html2canvas(container).then(canvas => {
+  html2canvas(container, {
+      backgroundColor: '#f5f5f5',
+      scale: 0.8
+    }).then(canvas => {
     console.log("📸 html2canvas 실행 완료");
 
     // Get current date in YYMMDD format
@@ -511,7 +514,6 @@ function updatePaymentSummary() {
         unpaidField.style.backgroundColor = unpaidAmount > 0 ? '#ffebeb' : '#f5f5f5';
       }
     } 
-    
   }
 }
 
@@ -595,6 +597,11 @@ function showCardPaymentPopup() {
     amountInput.oninput = function() {
       formatCurrency(this);
       updateTotal();
+    };
+    amountInput.onkeypress = function(e) {
+      if (e.key === 'Enter') {
+        confirmButton.click();
+      }
     };
 
     const deleteBtn = document.createElement('button');
@@ -809,6 +816,11 @@ function showDiscountPopup() {
     input.style.cssText = 'flex: 1; padding: 5px; border-radius: 5px;';
     input.placeholder = '금액 입력 (₩)';
     input.oninput = function() { formatCurrency(this); };
+    input.onkeypress = function(e) {
+      if (e.key === 'Enter') {
+        confirmButton.click();
+      }
+    };
 
     const deleteBtn = document.createElement('button');
     deleteBtn.innerHTML = '×';

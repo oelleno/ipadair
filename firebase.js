@@ -75,11 +75,52 @@ async function submitForm() {
                 birthdate: birthdate,
                 address: address,
                 membership: membership,
-                rentalMonths: rentalMonths,
-                lockerMonths: lockerMonths,
-                membershipMonths: membershipMonths,
+                branch: document.getElementById('branch').value,
+                contract_manager: document.querySelector('input[name="contract_manager"]').value,
+                gender: document.querySelector('input[name="gender"]:checked')?.value || '',
+                rental_months: rentalMonths,
+                rental_price: document.getElementById('rental_price').value,
+                locker_months: lockerMonths,
+                locker_price: document.getElementById('locker_price').value,
+                membership_months: membershipMonths,
+                membership_fee: document.getElementById('membership_fee').value,
+                admission_fee: document.getElementById('admission_fee').value,
                 discount: discount,
                 totalAmount: totalAmount,
+                goals: Array.from(document.querySelectorAll('input[name="goal"]:checked')).map(cb => cb.value),
+                other_goal: document.getElementById('other').value,
+                workout_times: {
+                    start: document.querySelector('select[name="morning_hour"]').value,
+                    end: document.querySelector('select[name="afternoon_hour"]').value,
+                    additional: document.querySelector('.time-input[type="text"]').value
+                },
+                payment_method: document.querySelector('input[name="payment"]:checked')?.value || '',
+                payment_details: Array.from(document.querySelectorAll('#payment-items input')).reduce((acc, input, i) => {
+                    if (i % 2 === 0) {
+                        acc.push({
+                            description: input.value,
+                            amount: document.querySelectorAll('#payment-items input')[i + 1]?.value || ''
+                        });
+                    }
+                    return acc;
+                }, []),
+                cash_receipt: document.querySelector('input[name="cash_receipt"]:checked')?.value || '',
+                receipt_phone: document.getElementById('receipt_phone').value,
+                membership_start_date: document.getElementById('membership_start_date').value,
+                referral_sources: Array.from(document.querySelectorAll('input[name="referral"]:checked')).map(cb => ({
+                    source: cb.value,
+                    detail: cb.value === 'SNS' ? document.getElementById('snsField').value :
+                            cb.value === '인터넷검색' ? document.querySelector('input[name="internet_detail"]').value :
+                            cb.value === '지인추천' ? {
+                                name: document.querySelector('input[name="referral_name"]').value,
+                                phone: document.querySelector('input[name="referral_phone"]').value
+                            } : ''
+                })),
+                terms_agreed: {
+                    main: document.querySelector('input[name="terms_agree"]').checked,
+                    twentyfour_hour: document.querySelector('input[name="24h_terms_agree"]').checked,
+                    refund: document.querySelector('input[name="refund_terms_agree"]').checked
+                },
                 timestamp: new Date().toISOString()
             };
 
